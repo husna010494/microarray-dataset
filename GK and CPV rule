@@ -4,7 +4,7 @@ install_github('ramhiser/datamicroarray')
 library(datamicroarray)
 q_GK_CPV=function(data){
 data=scale(as.matrix(data$x),center = TRUE, scale = FALSE)
-# dataori = original data
+# data = original data
 # centering is done by subtracting the column means
 # from their corresponding columns
 
