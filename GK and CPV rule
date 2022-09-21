@@ -1,0 +1,30 @@
+install.packages("devtools")
+library(devtools)
+install_github('ramhiser/datamicroarray')
+library(datamicroarray)
+q_GK_CPV=function(data){
+data=scale(as.matrix(data$x),center = TRUE, scale = FALSE)
+# dataori = original data
+# centering is done by subtracting the column means
+# from their corresponding columns
+
+n=nrow(data)
+p=ncol(data)
+y=matrix(nrow=p,ncol=n)
+for(i in 1:p){
+y[i,]=1/sqrt(sum(data[,i]^2)) * data[,i]
+}
+cd=t(y)%*%y
+# cd is dual correlation matrix
+# t(y) = matrix y transpose
+# %*% = multiply two matrix
+eigencd=eigen(cd)$values
+GK=which(eigencd<1)[1]-1
+Joldim=which((cumsum(eigencd)/sum(eigencd))>0.7)[1]
+print(c(p/n,GK/p,Joldim/p,p))
+}
+
+#Example
+data=borovecki
+data('borovecki', package = 'datamicroarray')
+q_GK_CPV(borovecki)
